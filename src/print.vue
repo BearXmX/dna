@@ -424,7 +424,7 @@ const quizAnswers = reactive<Record<string, string>>({})
 const modeOptions: ModeOption[] = [
   { value: 'build', label: '构建模式', icon: '🔧' },
   { value: 'view', label: '观察模式', icon: '🔍' },
-  { value: 'quiz', label: '练习模式', icon: '📝' },
+/*   { value: 'quiz', label: '练习模式', icon: '📝' }, */
 ]
 
 const sceneRef = shallowRef<THREE.Scene | null>(null)
