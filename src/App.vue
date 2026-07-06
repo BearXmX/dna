@@ -110,11 +110,13 @@
                       <span>P</span>
                     </template>
                     <template v-else-if="item.type === 'sugar' || item.type === 'sugar_reverse'">
-                      <svg viewBox="0 0 80 80" aria-hidden="true">
+                      <svg viewBox="-10 0 92 80" aria-hidden="true">
                         <g :class="{ 'sugar-preview-reverse': item.type === 'sugar_reverse' }">
                           <!-- v31：五碳糖用教材化顶点编号。红色 O 在顶点处，1/2/3/4 沿顺时针方向标注，编号加大便于课堂投屏。 -->
                           <path class="sugar-bond sugar-bond-left" d="M7 31 L18 22 L30 28" />
                           <path class="sugar-bond sugar-bond-right" d="M73 31 L62 40 L50 32" />
+                          <!-- v98：组件库预览补 4→5 折线。正向倒 V 左侧边更短；反向旋转后右侧边更短。 -->
+                          <path class="sugar-bond sugar-bond-five" d="M8 30 L1 17 L-3 27" />
                           <polygon points="40,7 72,30 60,68 20,68 8,30" />
                           <circle class="sugar-oxygen-dot" cx="40" cy="8" r="7.2" />
                           <text class="sugar-oxygen-text" x="40" y="11.2" text-anchor="middle">O</text>
@@ -122,6 +124,7 @@
                           <text class="sugar-carbon-label" x="57" y="63" text-anchor="middle">2</text>
                           <text class="sugar-carbon-label" x="23" y="63" text-anchor="middle">3</text>
                           <text class="sugar-carbon-label" x="12" y="34" text-anchor="middle">4</text>
+                          <text class="sugar-carbon-label sugar-carbon-label-five" x="0" y="14" text-anchor="middle">5</text>
                         </g>
                       </svg>
                     </template>
@@ -824,32 +827,33 @@ function createSceneBackgroundTexture() {
   canvas.height = 1024
   const ctx = canvas.getContext('2d')!
 
+  // v98：按源代码原来的蓝色科技风改，只去掉暗色渐变并提亮蓝色；不再使用接近白色的背景。
   const base = ctx.createLinearGradient(0, 0, 1024, 1024)
-  base.addColorStop(0, '#4b7098')
-  base.addColorStop(0.45, '#41648e')
-  base.addColorStop(1, '#345a82')
+  base.addColorStop(0, '#6fbce3')
+  base.addColorStop(0.45, '#56a9d8')
+  base.addColorStop(1, '#3f8fc5')
   ctx.fillStyle = base
   ctx.fillRect(0, 0, 1024, 1024)
 
   const cyanGlow = ctx.createRadialGradient(220, 210, 0, 220, 210, 520)
-  cyanGlow.addColorStop(0, 'rgba(55, 211, 255, 0.3)')
-  cyanGlow.addColorStop(0.55, 'rgba(55, 211, 255, 0.14)')
-  cyanGlow.addColorStop(1, 'rgba(55, 211, 255, 0)')
+  cyanGlow.addColorStop(0, 'rgba(88, 224, 255, 0.22)')
+  cyanGlow.addColorStop(0.55, 'rgba(88, 224, 255, 0.1)')
+  cyanGlow.addColorStop(1, 'rgba(88, 224, 255, 0)')
   ctx.fillStyle = cyanGlow
   ctx.fillRect(0, 0, 1024, 1024)
 
   const purpleGlow = ctx.createRadialGradient(820, 150, 0, 820, 150, 480)
-  purpleGlow.addColorStop(0, 'rgba(155, 92, 255, 0.22)')
-  purpleGlow.addColorStop(0.62, 'rgba(155, 92, 255, 0.1)')
+  purpleGlow.addColorStop(0, 'rgba(155, 92, 255, 0.1)')
+  purpleGlow.addColorStop(0.62, 'rgba(155, 92, 255, 0.045)')
   purpleGlow.addColorStop(1, 'rgba(155, 92, 255, 0)')
   ctx.fillStyle = purpleGlow
   ctx.fillRect(0, 0, 1024, 1024)
 
-  const darkVignette = ctx.createRadialGradient(512, 460, 120, 512, 460, 760)
-  darkVignette.addColorStop(0, 'rgba(255,255,255,0.05)')
-  darkVignette.addColorStop(0.72, 'rgba(18,34,58,0.025)')
-  darkVignette.addColorStop(1, 'rgba(18,34,58,0.14)')
-  ctx.fillStyle = darkVignette
+  const softVignette = ctx.createRadialGradient(512, 460, 120, 512, 460, 760)
+  softVignette.addColorStop(0, 'rgba(255,255,255,0.02)')
+  softVignette.addColorStop(0.72, 'rgba(20,90,135,0.015)')
+  softVignette.addColorStop(1, 'rgba(30,90,135,0.08)')
+  ctx.fillStyle = softVignette
   ctx.fillRect(0, 0, 1024, 1024)
 
   const texture = new THREE.CanvasTexture(canvas)
@@ -865,7 +869,7 @@ function initThreeScene() {
   const scene = new THREE.Scene()
   // v7：EffectComposer 开启 Bloom 后，透明背景会被渲染成纯黑；这里恢复主场景的深蓝科技渐变背景。
   scene.background = createSceneBackgroundTexture()
-  scene.fog = new THREE.Fog(0x426992, 60, 136)
+  scene.fog = new THREE.Fog(0x55a6d2, 62, 146)
   sceneRef.value = scene
 
   const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 1000)
@@ -3367,10 +3371,10 @@ function getMoleculeData(group: THREE.Group) {
   flex-direction: column;
   color: #fff;
   background:
-    radial-gradient(circle at 20% 20%, rgba(46, 196, 255, 0.3), transparent 32%),
-    radial-gradient(circle at 78% 10%, rgba(155, 92, 255, 0.24), transparent 30%),
-    radial-gradient(circle at 50% 90%, rgba(46, 196, 182, 0.2), transparent 32%),
-    linear-gradient(135deg, #173055 0%, #203b64 48%, #1a466d 100%);
+    radial-gradient(circle at 20% 20%, rgba(80, 220, 255, 0.26), transparent 32%),
+    radial-gradient(circle at 78% 10%, rgba(155, 92, 255, 0.12), transparent 30%),
+    radial-gradient(circle at 50% 90%, rgba(46, 196, 182, 0.12), transparent 32%),
+    linear-gradient(135deg, #6fbce3 0%, #56a9d8 48%, #3f8fc5 100%);
   box-sizing: border-box;
   user-select: none;
 }
@@ -3385,10 +3389,10 @@ function getMoleculeData(group: THREE.Group) {
 }
 
 .glass-panel {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.055));
-  border: 1px solid rgba(179, 235, 255, 0.22);
+  background: linear-gradient(145deg, rgba(20, 90, 135, 0.28), rgba(20, 90, 135, 0.14));
+  border: 1px solid rgba(179, 235, 255, 0.26);
   border-radius: 18px;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: 0 18px 42px rgba(20, 80, 120, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(14px);
 }
 
@@ -3802,6 +3806,7 @@ function getMoleculeData(group: THREE.Group) {
 .preview-sugar svg {
   width: 62px;
   height: 62px;
+  overflow: visible;
   filter: drop-shadow(0 0 14px rgba(52, 212, 255, 0.6));
 }
 
@@ -3842,6 +3847,15 @@ function getMoleculeData(group: THREE.Group) {
   font-weight: 900;
   fill: rgba(255, 255, 255, 0.98);
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.45);
+}
+
+.preview-sugar .sugar-carbon-label-five {
+  font-size: 17px;
+  fill: rgba(236, 255, 255, 0.98);
+}
+
+.preview-sugar .sugar-bond-five {
+  stroke-width: 3.2;
 }
 
 .preview-sugar .sugar-preview-reverse {
@@ -4005,9 +4019,9 @@ function getMoleculeData(group: THREE.Group) {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 24% 22%, rgba(46, 196, 255, 0.16), transparent 34%),
-    radial-gradient(circle at 78% 16%, rgba(155, 92, 255, 0.14), transparent 32%),
-    linear-gradient(135deg, #2e4965 0%, #253653 46%, #182440 100%);
+    radial-gradient(circle at 24% 22%, rgba(72, 214, 255, 0.16), transparent 34%),
+    radial-gradient(circle at 78% 16%, rgba(155, 92, 255, 0.075), transparent 32%),
+    linear-gradient(135deg, #6fbce3 0%, #56a9d8 46%, #3f8fc5 100%);
 }
 
 :deep(.dna-three-canvas) {
