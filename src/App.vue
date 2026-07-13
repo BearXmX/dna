@@ -12,63 +12,36 @@
 
       <div class="mode-actions">
         <div class="tech-mode-tabs" role="tablist" aria-label="DNA 学习模式切换">
-          <button
-            v-for="mode in modeOptions"
-            :key="mode.value"
-            type="button"
-            class="tech-mode-btn"
-            :class="{ active: currentMode === mode.value }"
-            @click="setMode(mode.value)"
-          >
+          <button v-for="mode in modeOptions" :key="mode.value" type="button" class="tech-mode-btn"
+            :class="{ active: currentMode === mode.value }" @click="setMode(mode.value)">
             <span class="mode-icon">{{ mode.icon }}</span>
             <span>{{ mode.label }}</span>
           </button>
         </div>
         <div class="header-quick-actions">
-          <button
-            type="button"
-            class="header-action-btn"
-            :class="{ active: isFullscreen }"
-            @click="toggleFullscreen"
-          >
+          <button type="button" class="header-action-btn" :class="{ active: isFullscreen }" @click="toggleFullscreen">
             {{ isFullscreen ? '退出全屏' : '全屏' }}
           </button>
-          <button
-            type="button"
-            class="header-action-btn"
-            :class="{ active: isLeftPanelCollapsed }"
-            @click="toggleLeftPanel"
-          >
+          <button type="button" class="header-action-btn" :class="{ active: isLeftPanelCollapsed }"
+            @click="toggleLeftPanel">
             {{ isLeftPanelCollapsed ? '展开左侧' : '收起左侧' }}
           </button>
-          <button
-            type="button"
-            class="header-action-btn"
-            :class="{ active: isRightPanelCollapsed }"
-            @click="toggleRightPanel"
-          >
+          <button type="button" class="header-action-btn" :class="{ active: isRightPanelCollapsed }"
+            @click="toggleRightPanel">
             {{ isRightPanelCollapsed ? '展开右侧' : '收起右侧' }}
           </button>
 
           <button type="button" class="header-action-btn" @click="captureScene">📸 场景截图</button>
-          <button
-            v-if="currentMode === 'view'"
-            type="button"
-            class="header-action-btn helix-toggle-btn"
-            :class="{ active: structureViewMode === 'helix' }"
-            @click="toggleStructureViewMode"
-          >
+          <button v-if="currentMode === 'view'" type="button" class="header-action-btn helix-toggle-btn"
+            :class="{ active: structureViewMode === 'helix' }" @click="toggleStructureViewMode">
             {{ structureViewMode === 'helix' ? '切换平面' : '切换螺旋' }}
           </button>
-          <button type="button" class="header-action-btn" :disabled="!canExportModel" @click="exportSceneObj">⬇️ 导出 OBJ</button>
-          <button type="button" class="header-action-btn" :disabled="!canExportModel" @click="exportSceneStlAscii">⬇️ 导出 STL</button>
+          <button type="button" class="header-action-btn" :disabled="!canExportModel" @click="exportSceneObj">⬇️ 导出
+            OBJ</button>
+          <button type="button" class="header-action-btn" :disabled="!canExportModel" @click="exportSceneStlAscii">⬇️ 导出
+            STL</button>
           <button type="button" class="header-action-btn" @click="resetCamera">重置视角</button>
-          <button
-            type="button"
-            class="header-action-btn"
-            :class="{ active: isAutoRotating }"
-            @click="toggleAutoRotate"
-          >
+          <button type="button" class="header-action-btn" :class="{ active: isAutoRotating }" @click="toggleAutoRotate">
             {{ isAutoRotating ? '停止旋转' : '自动旋转' }}
           </button>
         </div>
@@ -94,15 +67,9 @@
             </div>
 
             <div class="component-list">
-              <div
-                v-for="item in group.items"
-                :key="item.type"
-                class="component-card"
-                :class="[`type-${item.type}`]"
-                draggable="true"
-                @dragstart="onPaletteDragStart($event, item.type)"
-                @click="addMoleculeFromPalette(item.type)"
-              >
+              <div v-for="item in group.items" :key="item.type" class="component-card" :class="[`type-${item.type}`]"
+                draggable="true" @dragstart="onPaletteDragStart($event, item.type)"
+                @click="addMoleculeFromPalette(item.type)">
                 <div class="preview-wrap">
                   <div class="preview-glow" :style="{ background: item.previewGlow }"></div>
                   <div class="molecule-preview" :class="item.previewClass">
@@ -124,7 +91,8 @@
                           <text class="sugar-carbon-label" x="57" y="63" text-anchor="middle">2</text>
                           <text class="sugar-carbon-label" x="23" y="63" text-anchor="middle">3</text>
                           <text class="sugar-carbon-label" x="12" y="34" text-anchor="middle">4</text>
-                          <text class="sugar-carbon-label sugar-carbon-label-five" x="0" y="14" text-anchor="middle">5</text>
+                          <text class="sugar-carbon-label sugar-carbon-label-five" x="0" y="14"
+                            text-anchor="middle">5</text>
                         </g>
                       </svg>
                     </template>
@@ -145,12 +113,7 @@
       </aside>
 
       <section class="center-panel glass-panel">
-        <div
-          ref="canvasWrapRef"
-          class="canvas-wrap"
-          @dragover.prevent
-          @drop="onCanvasDrop"
-        ></div>
+        <div ref="canvasWrapRef" class="canvas-wrap" @dragover.prevent @drop="onCanvasDrop"></div>
 
       </section>
 
@@ -165,7 +128,7 @@
         <div class="science-fix-cards">
           <div class="science-fix-card fix-blue">
             <h3>反向平行</h3>
-            <p>脱氧核糖1'-C连碱基，5'-C连磷酸基团；单链游离磷酸端为5'端，游离羟基端为3'端；DNA双链反向平行，两条链5'→3'走向相反。</p>
+            <p>脱氧核糖1'-C连碱基，5'-C连磷酸基团；单链游离磷酸基团端为5'端，游离羟基端为3'端；DNA双链反向平行，两条链5'→3'走向相反。</p>
           </div>
           <div class="science-fix-card fix-purple">
             <h3>嘌呤与嘧啶</h3>
@@ -209,17 +172,9 @@
       </aside>
     </main>
 
-    <el-dialog
-      v-model="quizDialogVisible"
-      class="dna-quiz-dialog"
-      width="min(860px, 94vw)"
-      top="6vh"
-      :close-on-click-modal="false"
-      :append-to-body="false"
-      :teleported="false"
-      modal-class="dna-quiz-overlay"
-      @open="ensureQuizStarted"
-    >
+    <el-dialog v-model="quizDialogVisible" class="dna-quiz-dialog" width="min(860px, 94vw)" top="6vh"
+      :close-on-click-modal="false" :append-to-body="false" :teleported="false" modal-class="dna-quiz-overlay"
+      @open="ensureQuizStarted">
       <template #header>
         <div class="quiz-dialog-head">
           <div class="quiz-dialog-title">
@@ -231,33 +186,17 @@
       </template>
 
       <div class="quiz-dialog-body">
-        <section
-          v-for="(question, qIndex) in quizQuestions"
-          :key="question.id"
-          class="quiz-question-card"
-        >
+        <section v-for="(question, qIndex) in quizQuestions" :key="question.id" class="quiz-question-card">
           <h3>{{ qIndex + 1 }}. {{ question.title }}</h3>
-          <el-radio-group
-            v-model="quizAnswers[question.id]"
-            class="quiz-option-group"
-            :disabled="quizSubmitted"
-          >
-            <el-radio
-              v-for="option in question.options"
-              :key="option.value"
-              :label="option.value"
-              class="quiz-option"
-              :class="getQuizOptionClass(question, option.value)"
-            >
+          <el-radio-group v-model="quizAnswers[question.id]" class="quiz-option-group" :disabled="quizSubmitted">
+            <el-radio v-for="option in question.options" :key="option.value" :label="option.value" class="quiz-option"
+              :class="getQuizOptionClass(question, option.value)">
               {{ option.label }}
             </el-radio>
           </el-radio-group>
 
-          <div
-            v-if="quizSubmitted"
-            class="quiz-explain"
-            :class="quizAnswers[question.id] === question.answer ? 'correct' : 'wrong'"
-          >
+          <div v-if="quizSubmitted" class="quiz-explain"
+            :class="quizAnswers[question.id] === question.answer ? 'correct' : 'wrong'">
             {{ quizAnswers[question.id] === question.answer ? '回答正确：' : '回答错误：' }}{{ question.explain }}
           </div>
         </section>
@@ -267,12 +206,7 @@
         <div class="quiz-dialog-footer">
           <el-button @click="quizDialogVisible = false">关闭</el-button>
           <el-button v-if="quizSubmitted" type="primary" @click="restartQuiz">重新测验</el-button>
-          <el-button
-            v-else
-            type="primary"
-            :disabled="!isQuizComplete"
-            @click="submitQuiz"
-          >
+          <el-button v-else type="primary" :disabled="!isQuizComplete" @click="submitQuiz">
             提交测验
           </el-button>
         </div>
@@ -427,7 +361,7 @@ const quizAnswers = reactive<Record<string, string>>({})
 const modeOptions: ModeOption[] = [
   { value: 'build', label: '构建模式', icon: '🔧' },
   { value: 'view', label: '观察模式', icon: '🔍' },
-/*   { value: 'quiz', label: '练习模式', icon: '📝' }, */
+  /*   { value: 'quiz', label: '练习模式', icon: '📝' }, */
 ]
 
 const sceneRef = shallowRef<THREE.Scene | null>(null)
@@ -474,7 +408,7 @@ const stats = reactive({
 const moleculePalette: PaletteItem[] = [
   {
     type: 'phosphate',
-    name: '磷酸基团',
+    name: '磷酸',
     shortName: 'P',
     description: 'PO₄³⁻，连接脱氧核糖形成骨架',
     tips: '可连接：脱氧核糖',
@@ -1409,7 +1343,7 @@ function onPointerUp(event: PointerEvent) {
   controlsRef.value && (controlsRef.value.enabled = true)
   try {
     rendererRef.value?.domElement.releasePointerCapture(event.pointerId)
-  } catch {}
+  } catch { }
 
   if (target) {
     target.scale.setScalar(selectedGroup.value === target ? MOLECULE_SELECTED_SCALE : MOLECULE_SCALE)
@@ -3637,9 +3571,17 @@ function getMoleculeData(group: THREE.Group) {
   grid-template-areas: 'center';
 }
 
-.left-panel { grid-area: left; }
-.center-panel { grid-area: center; }
-.right-panel { grid-area: right; }
+.left-panel {
+  grid-area: left;
+}
+
+.center-panel {
+  grid-area: center;
+}
+
+.right-panel {
+  grid-area: right;
+}
 
 .left-panel,
 .right-panel {
@@ -3925,10 +3867,21 @@ function getMoleculeData(group: THREE.Group) {
   clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
 }
 
-.preview-a { color: #ff4f9a; }
-.preview-t { color: #9b5cff; }
-.preview-g { color: #ff8a3d; }
-.preview-c { color: #20d789; }
+.preview-a {
+  color: #ff4f9a;
+}
+
+.preview-t {
+  color: #9b5cff;
+}
+
+.preview-g {
+  color: #ff8a3d;
+}
+
+.preview-c {
+  color: #20d789;
+}
 
 .component-text {
   min-width: 0;
@@ -3985,10 +3938,22 @@ function getMoleculeData(group: THREE.Group) {
   white-space: nowrap;
 }
 
-.base-chip.a { background: linear-gradient(135deg, #ff4f9a, #b9205d); }
-.base-chip.t { background: linear-gradient(135deg, #9b5cff, #552fc7); }
-.base-chip.g { background: linear-gradient(135deg, #ff8a3d, #b84a10); }
-.base-chip.c { background: linear-gradient(135deg, #20d789, #128c62); color: #eafff7; }
+.base-chip.a {
+  background: linear-gradient(135deg, #ff4f9a, #b9205d);
+}
+
+.base-chip.t {
+  background: linear-gradient(135deg, #9b5cff, #552fc7);
+}
+
+.base-chip.g {
+  background: linear-gradient(135deg, #ff8a3d, #b84a10);
+}
+
+.base-chip.c {
+  background: linear-gradient(135deg, #20d789, #128c62);
+  color: #eafff7;
+}
 
 .bond-dot {
   color: #eaffff;
@@ -4873,5 +4838,4 @@ function getMoleculeData(group: THREE.Group) {
   background: #55b8ff !important;
   border-color: #55b8ff !important;
 }
-
 </style>

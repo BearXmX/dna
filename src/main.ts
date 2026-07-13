@@ -6,6 +6,6 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import './index.css'
 import Print from './print.vue'
 
-const app = createApp(App)
+const app = createApp(Print)
 app.use(ElementPlus)
 app.mount('#app')
