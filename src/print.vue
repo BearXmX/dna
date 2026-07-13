@@ -5,7 +5,7 @@
         <div class="brand-icon">🧬</div>
         <div>
           <div class="title-row">
-            <h1>DNA双螺旋结构模型</h1>
+            <h1>DNA的双螺旋结构</h1>
           </div>
         </div>
       </div>
